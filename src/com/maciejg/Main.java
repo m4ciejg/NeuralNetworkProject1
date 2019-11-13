@@ -2,10 +2,7 @@ package com.maciejg;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -13,39 +10,25 @@ public class Main extends JFrame {
     Paint paint;
     Board board;
 
-    public class Paint extends JPanel implements MouseListener{
+    public class Paint extends JPanel implements MouseMotionListener {
         private int x,y;
         private ArrayList<Point> points = new ArrayList<Point>();
 
         public Paint() {
-            addMouseListener(this);
+            addMouseMotionListener(this);
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
+        public void mouseDragged(MouseEvent e) {
             x = e.getX();
             y = e.getY();
             points.add(new Point(x, y));
             repaint();
+            System.out.println("dupa");
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
+        public void mouseMoved(MouseEvent e) {
 
         }
 
@@ -78,6 +61,8 @@ public class Main extends JFrame {
                 g2d.drawLine(0, h*i/8 ,w, h*i/8);
             }
         }
+
+
     }
 
 
@@ -97,10 +82,11 @@ public class Main extends JFrame {
     public Main() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800,400);
+        setResizable(false);
+        setLocationRelativeTo(null);
         setLayout(new GridLayout(1,2));
         add(paint = new Paint());
         add(board = new Board());
-        System.out.println("dupa");
         setVisible(true);
     }
 

@@ -17,7 +17,6 @@ public class Main extends JFrame {
         private int x,y;
         private ArrayList<Point> points = new ArrayList<Point>();
 
-
         public Paint() {
             addMouseListener(this);
         }
@@ -58,6 +57,7 @@ public class Main extends JFrame {
             g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
             g2d.setColor(Color.BLACK);
             drawRectangles(g2d);
+            drawLines(g2d);
         }
 
         private void drawRectangles(Graphics2D g2d) {
@@ -69,6 +69,15 @@ public class Main extends JFrame {
             }
         }
 
+        private void drawLines(Graphics2D g2d) {
+            int w = getWidth();
+            int h = getHeight();
+            g2d.setColor(Color.RED);
+            for(int i = 0; i < 8; i++){
+                g2d.drawLine(w*i/8, 0, w*i/8,h);
+                g2d.drawLine(0, h*i/8 ,w, h*i/8);
+            }
+        }
     }
 
 
@@ -87,7 +96,7 @@ public class Main extends JFrame {
 
     public Main() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800,600);
+        setSize(800,400);
         setLayout(new GridLayout(1,2));
         add(paint = new Paint());
         add(board = new Board());

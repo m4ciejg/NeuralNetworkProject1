@@ -9,10 +9,16 @@ import java.util.ArrayList;
 public class Main extends JFrame {
     Paint paint;
     Board board;
+    private ArrayList<Point> points = new ArrayList<Point>();
+
+    public void clearWindow() {
+        points.clear();
+        repaint();
+    }
 
     public class Paint extends JPanel implements MouseMotionListener {
         private int x,y;
-        private ArrayList<Point> points = new ArrayList<Point>();
+
 
         public Paint() {
             addMouseMotionListener(this);
@@ -24,7 +30,7 @@ public class Main extends JFrame {
             y = e.getY();
             points.add(new Point(x, y));
             repaint();
-            System.out.println("dupa");
+            System.out.println("X, Y: " + x + " " + y);
         }
 
         @Override
@@ -61,8 +67,6 @@ public class Main extends JFrame {
                 g2d.drawLine(0, h*i/8 ,w, h*i/8);
             }
         }
-
-
     }
 
 
@@ -70,8 +74,11 @@ public class Main extends JFrame {
 
         public Board() {
             JButton button1 = new JButton("Uczenie");
-            JButton button2 = new JButton("Dupa");
+            JButton button2 = new JButton("Clear");
             JButton button3 = new JButton("Dupsko");
+            button2.addActionListener(e -> {
+                clearWindow();
+            });
             add(button1);
             add(button2);
             add(button3);

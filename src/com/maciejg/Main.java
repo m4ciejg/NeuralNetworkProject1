@@ -1,6 +1,7 @@
 package com.maciejg;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
@@ -10,6 +11,7 @@ public class Main extends JFrame {
     Paint paint;
     Board board;
     private ArrayList<Point> points = new ArrayList<Point>();
+    private ArrayList<Point> clearBoard = new ArrayList<>();
 
     public void clearWindow() {
         points.clear();
@@ -18,7 +20,6 @@ public class Main extends JFrame {
 
     public class Paint extends JPanel implements MouseMotionListener {
         private int x,y;
-
 
         public Paint() {
             addMouseMotionListener(this);
@@ -30,7 +31,11 @@ public class Main extends JFrame {
             y = e.getY();
             points.add(new Point(x, y));
             repaint();
-            System.out.println("X, Y: " + x + " " + y);
+            System.out.println(points.size());
+            for(Point p : points) {
+                System.out.println("punkt x" + p.getX());
+                System.out.println("punkt y"+p.getY());
+            }
         }
 
         @Override
@@ -74,15 +79,26 @@ public class Main extends JFrame {
 
         public Board() {
             JButton button1 = new JButton("Uczenie");
-            JButton button2 = new JButton("Clear");
+            JButton clearButton = new JButton("Clear");
             JButton button3 = new JButton("Dupsko");
-            button2.addActionListener(e -> {
+            clearButton.addActionListener(e -> {
                 clearWindow();
             });
+            button1.addActionListener(e -> {
+                LearningBoard learningBoard = new LearningBoard();
+                learningBoard.createFrame();
+            });
             add(button1);
-            add(button2);
+            add(clearButton);
             add(button3);
+
         }
+
+        //
+        public void store () {
+
+        }
+
     }
 
 

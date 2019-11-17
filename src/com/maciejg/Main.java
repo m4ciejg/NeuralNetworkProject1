@@ -48,7 +48,10 @@ public class Main extends JFrame {
             button3.addActionListener(e -> {
                 pixelList = new ArrayList<Integer>();
                 pixelList = paint.returnListOfPixels();
+                int licznik = 0;
                 for(Object i : pixelList) {
+                    licznik++;
+                    if(licznik % 28 ==0) System.out.println("");
                     System.out.print(i + " ");
                 }
             });

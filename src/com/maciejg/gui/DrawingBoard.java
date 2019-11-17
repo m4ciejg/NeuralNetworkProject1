@@ -1,9 +1,11 @@
 package com.maciejg.gui;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 public class DrawingBoard extends CustomBoard implements MouseMotionListener, MouseListener {
 
@@ -13,8 +15,6 @@ public class DrawingBoard extends CustomBoard implements MouseMotionListener, Mo
         addMouseListener(this);
         addMouseMotionListener(this);
     }
-
-
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -67,5 +67,14 @@ public class DrawingBoard extends CustomBoard implements MouseMotionListener, Mo
         for(Section s : sections) {
             s.setActive(false);
         }
+    }
+
+    public ArrayList returnListOfPixels() {
+        ArrayList<Integer> tempList = new ArrayList<Integer>();
+        for(Section s : sections) {
+            if(s.isActive()) tempList.add(1);
+            else tempList.add(0);
+        }
+        return tempList;
     }
 }

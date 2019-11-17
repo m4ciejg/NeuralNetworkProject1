@@ -2,17 +2,18 @@ package com.maciejg;
 
 import com.maciejg.gui.DrawingBoard;
 import com.maciejg.gui.LearningWindow;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends JFrame {
     private DrawingBoard paint;
     private Board board;
-    private ArrayList<Point> points = new ArrayList<Point>();
-    private ArrayList<Point> clearBoard = new ArrayList<>();
+    private JLabel jLabelZ;
+    private  JLabel jLabel2;
+    private JLabel jLabelS;
+    private List pixelList;
     private final int RESOLUTION = 28;
 
     private void clearWindow() {
@@ -32,20 +33,37 @@ public class Main extends JFrame {
     }
 
     public class Board extends JPanel {
+
         public Board() {
             JButton button1 = new JButton("Uczenie");
-            JButton clearButton = new JButton("Clear");
-            clearButton.addActionListener(e -> {
-                clearWindow();
-            });
-            JButton button3 = new JButton("Dupsko");
             button1.addActionListener(e -> {
                 LearningWindow learningBoard = new LearningWindow();
                 learningBoard.createFrame();
             });
+            JButton clearButton = new JButton("Clear");
+            clearButton.addActionListener(e -> {
+                clearWindow();
+            });
+            JButton button3 = new JButton("Train");
+            button3.addActionListener(e -> {
+                pixelList = new ArrayList<Integer>();
+                pixelList = paint.returnListOfPixels();
+                for(Object i : pixelList) {
+                    System.out.print(i + " ");
+                }
+            });
+
             add(button1);
             add(clearButton);
             add(button3);
+
+            jLabelS = new JLabel("S: ");
+            jLabel2 = new JLabel("2: ");
+            jLabelZ = new JLabel("Z: ");
+
+            add(jLabel2);
+            add(jLabelS);
+            add(jLabelZ);
         }
     }
 
@@ -54,6 +72,5 @@ public class Main extends JFrame {
         EventQueue.invokeLater(() -> {
             new Main();
         });
-
     }
 }

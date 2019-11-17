@@ -38,7 +38,7 @@ public class CustomBoard extends JPanel {
     }
 
     private void generateSection(Graphics g) {
-        g.setColor(Color.GREEN);
+        g.setColor(Color.BLACK);
         for(Section s : sections) {
             g.drawLine(0, s.getY(), width, s.getY());
             g.drawLine(s.getX(), 0, s.getX(), height);

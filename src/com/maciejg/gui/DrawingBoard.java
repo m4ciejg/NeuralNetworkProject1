@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DrawingBoard extends CustomBoard implements MouseMotionListener, MouseListener {
 
@@ -69,8 +70,8 @@ public class DrawingBoard extends CustomBoard implements MouseMotionListener, Mo
         }
     }
 
-    public ArrayList returnListOfPixels() {
-        ArrayList<Integer> tempList = new ArrayList<Integer>();
+    public List returnListOfPixels() {
+        List<Integer> tempList = new ArrayList<>();
         for(Section s : sections) {
             if(s.isActive()) tempList.add(1);
             else tempList.add(0);

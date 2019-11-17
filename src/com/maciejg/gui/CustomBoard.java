@@ -24,7 +24,7 @@ public class CustomBoard extends JPanel {
         sections = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             for(int j =0; j < count; j++) {
-                sections.add(new Section(i * (width / count), j * (height / count), width / count, height / count));
+                sections.add(new Section(j * (width / count), i * (height / count), width / count, height / count));
             }
         }
         repaint();

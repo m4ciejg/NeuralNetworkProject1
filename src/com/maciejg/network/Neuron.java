@@ -1,4 +1,4 @@
-package com.maciejg;
+package com.maciejg.network;
 
 import java.util.Random;
 

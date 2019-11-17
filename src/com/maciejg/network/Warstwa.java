@@ -1,7 +1,9 @@
-package com.maciejg;
+package com.maciejg.network;
+
+import com.maciejg.network.Neuron;
 
 public class Warstwa {
-    Neuron [] neurony;
+    Neuron[] neurony;
     int liczba_neuronow;
     public Warstwa(){
         neurony=null;

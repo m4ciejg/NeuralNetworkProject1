@@ -1,7 +1,7 @@
-package com.maciejg;
+package com.maciejg.network;
 
 public class Siec {
-    Warstwa [] warstwy;
+    Warstwa[] warstwy;
     int liczba_warstw;
     public Siec(){
         warstwy=null;

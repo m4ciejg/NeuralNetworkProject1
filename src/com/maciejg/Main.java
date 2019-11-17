@@ -1,106 +1,24 @@
 package com.maciejg;
 
+import com.maciejg.gui.DrawingBoard;
+import com.maciejg.gui.LearningWindow;
+
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class Main extends JFrame {
-    Paint paint;
-    Board board;
+    private DrawingBoard paint;
+    private Board board;
     private ArrayList<Point> points = new ArrayList<Point>();
     private ArrayList<Point> clearBoard = new ArrayList<>();
+    private final int RESOLUTION = 28;
 
-    public void clearWindow() {
-        points.clear();
+    private void clearWindow() {
+        paint.clearBoard();
         repaint();
     }
-
-    public class Paint extends JPanel implements MouseMotionListener {
-        private int x,y;
-
-        public Paint() {
-            addMouseMotionListener(this);
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            x = e.getX();
-            y = e.getY();
-            points.add(new Point(x, y));
-            repaint();
-            System.out.println(points.size());
-            for(Point p : points) {
-                System.out.println("punkt x" + p.getX());
-                System.out.println("punkt y"+p.getY());
-            }
-        }
-
-        @Override
-        public void mouseMoved(MouseEvent e) {
-
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(Color.WHITE);
-            g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-            g2d.setColor(Color.BLACK);
-            drawRectangles(g2d);
-            drawLines(g2d);
-        }
-
-        private void drawRectangles(Graphics2D g2d) {
-            int x, y;
-            for (Point p : points) {
-                x = (int) p.getX();
-                y = (int) p.getY();
-                g2d.fillRect(x, y, 10, 10);
-            }
-        }
-
-        private void drawLines(Graphics2D g2d) {
-            int w = getWidth();
-            int h = getHeight();
-            g2d.setColor(Color.RED);
-            for(int i = 0; i < 8; i++){
-                g2d.drawLine(w*i/8, 0, w*i/8,h);
-                g2d.drawLine(0, h*i/8 ,w, h*i/8);
-            }
-        }
-    }
-
-
-    public class Board extends JPanel {
-
-        public Board() {
-            JButton button1 = new JButton("Uczenie");
-            JButton clearButton = new JButton("Clear");
-            JButton button3 = new JButton("Dupsko");
-            clearButton.addActionListener(e -> {
-                clearWindow();
-            });
-            button1.addActionListener(e -> {
-                LearningBoard learningBoard = new LearningBoard();
-                learningBoard.createFrame();
-            });
-            add(button1);
-            add(clearButton);
-            add(button3);
-
-        }
-
-        //
-        public void store () {
-
-        }
-
-    }
-
 
     public Main() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -108,10 +26,29 @@ public class Main extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(1,2));
-        add(paint = new Paint());
+        add(paint = new DrawingBoard(400, 400, RESOLUTION));
         add(board = new Board());
         setVisible(true);
     }
+
+    public class Board extends JPanel {
+        public Board() {
+            JButton button1 = new JButton("Uczenie");
+            JButton clearButton = new JButton("Clear");
+            clearButton.addActionListener(e -> {
+                clearWindow();
+            });
+            JButton button3 = new JButton("Dupsko");
+            button1.addActionListener(e -> {
+                LearningWindow learningBoard = new LearningWindow();
+                learningBoard.createFrame();
+            });
+            add(button1);
+            add(clearButton);
+            add(button3);
+        }
+    }
+
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {

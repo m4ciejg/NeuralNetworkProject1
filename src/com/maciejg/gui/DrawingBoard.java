@@ -71,10 +71,10 @@ public class DrawingBoard extends CustomBoard implements MouseMotionListener, Mo
     }
 
     public List returnListOfPixels() {
-        List<Integer> tempList = new ArrayList<>();
+        List<Boolean> tempList = new ArrayList<>();
         for(Section s : sections) {
-            if(s.isActive()) tempList.add(1);
-            else tempList.add(0);
+            if(s.isActive()) tempList.add(true);
+            else tempList.add(false);
         }
         return tempList;
     }

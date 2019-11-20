@@ -34,14 +34,18 @@ public class Main extends JFrame {
     private JButton rozpoznaj;
     private JButton buttonnaucz;
     private JButton loadtest;
+    private JButton testuj;
     private JRadioButton button_Z;
     private JRadioButton button_S;
     private JRadioButton button_2;
     private JLabel wyniktxt;
     private final int RESOLUTION = 14;
     public int learnCounter=0;
-    private JTextField infoTextField;
-    private JTextField learnTextField;
+    private String learnString="Ciag uczacy: ";
+    private JLabel info;
+    private JLabel learnlabel;
+    private JLabel rozpoznana;
+    private JLabel litera;
     private void clearWindow() {
         paint.clearBoard();
         repaint();
@@ -80,19 +84,36 @@ public class Main extends JFrame {
         panel6.setLayout(new GridLayout(1,2));
         JPanel panel7 = new JPanel();
         panel7.setLayout(new GridLayout(1,3));
+        JPanel panel8= new JPanel();
+        panel8.setLayout(new GridLayout(1,2));
+
+        JPanel panel9 = new JPanel();
+        panel9.setLayout(new GridLayout(3,1));
+        JPanel panel10 = new JPanel();
+        panel10.setLayout(new GridLayout(1,2));
+        JPanel panel11 = new JPanel();
+        panel11.setLayout(new GridLayout(1,2));
         add(paint = new DrawingBoard(400, 400, RESOLUTION));
         add(panel1);
         panel1.add(panel2);
         panel2.add(panel3);
         panel2.add(panel4);
-        wyniktxt = new JLabel("X",SwingConstants.CENTER);
-        panel1.add(wyniktxt);
+        panel1.add(panel9);
+        wyniktxt = new JLabel("",SwingConstants.CENTER);
+
         wczytaj = new JButton("Wczytaj CU");
-        clearButton = new JButton("");
+        clearButton = new JButton("X");
         button3 = new JButton("Dodaj do CU");
         zapisz = new JButton("Zapisz");
         buttonnaucz = new JButton("Naucz");
         loadtest = new JButton("Wczytaj CT");
+        testuj = new JButton("Testuj...");
+        info = new JLabel("Wczytaj lub dodaj ciąg",SwingConstants.CENTER);
+        learnlabel = new JLabel("Ciag uczacy: ", SwingConstants.CENTER);
+        rozpoznana = new JLabel("",SwingConstants.CENTER);
+        Font fontLetter2 = new Font("Arial", Font.BOLD, 60);
+        litera = new JLabel("",SwingConstants.CENTER);
+        litera.setFont(fontLetter2);
         panel3.add(clearButton);
         panel3.add(wczytaj);
         panel3.add(loadtest);
@@ -113,8 +134,15 @@ public class Main extends JFrame {
         panel7.add(button_2);
         panel7.add(button_Z);
         rozpoznaj = new JButton("Rozpoznaj");
-        panel2.add(rozpoznaj);
-
+        panel2.add(panel8);
+        panel8.add(rozpoznaj);
+        panel8.add(info);
+        panel9.add(panel10);
+        panel10.add(testuj);
+        panel10.add(learnlabel);
+        panel9.add(panel11);
+        panel11.add(rozpoznana);
+        panel11.add(litera);
     }
     private void setOnClicks() {
 
@@ -131,13 +159,7 @@ public class Main extends JFrame {
             pixbool=convert(paint.returnListOfPixels().toArray());
             pixelList.add(pixbool);
             radiobool.add(radiobtab());
-            for(int i =0; i< radiobool.get(0).length; i++) {
-                System.out.print(radiobool.get(0)[i]+" ");
-            }
-            System.out.println();
-            for(int i =0; i< pixelList.get(0).length; i++) {
-                System.out.print(pixelList.get(0)[i]+" ");
-            }
+            upLearnCounter();
         });
         button_S.addActionListener(e -> {
             if(button_S.isSelected()) button3.setEnabled(true);
@@ -170,22 +192,45 @@ public class Main extends JFrame {
                 lettersSequenceDouble.add(lettersArray);
                 matrixSequenceDouble.add(matrixArray);
             }
-
+            showLearnCounter();
             siec.ucz_z_ciagu(matrixSequenceDouble, lettersSequenceDouble);
-
+            info.setText("Siec nauczona");
         });
         loadtest.addActionListener(e -> {
             testFile(e);
         });
         rozpoznaj.addActionListener(e -> {
                 boolean[] letterBoolMatrix =convert(paint.returnListOfPixels().toArray());
-
                 double[] inputLetterPix = boolArrayToDouble(letterBoolMatrix);
-
-
                 double[] recognizedLetter = siec.oblicz_wyjscie(inputLetterPix);
-
                 letterArrToLetter(recognizedLetter);
+        });
+        testuj.addActionListener(e -> {
+            info.setText("Rozpoczynam testowanie...");
+            //Przetwarzanie danych zapisanych w CU z logicznych na double
+            ArrayList<double[]> lettersSequenceDouble = new ArrayList<double[]>();
+            ArrayList<double[]> matrixSequenceDouble = new ArrayList<double[]>();
+
+            for(int i = 0; i< radiobool.size(); i++) {
+                boolean[] lettersBool = radiobool.get(i);
+                boolean[] matrixBool = pixelList.get(i);
+                double[] lettersArray = new double[lettersBool.length];
+                double[] matrixArray = new double[matrixBool.length];
+
+                for (int j = 0; j < lettersArray.length; j++) {
+                    lettersArray[j] = lettersBool[j] ? 1.0 : 0.0;
+                }
+                for (int j = 0; j < matrixArray.length; j++) {
+                    matrixArray[j] = matrixBool[j] ? 1.0 : 0.0;
+                }
+
+                lettersSequenceDouble.add(lettersArray);
+                matrixSequenceDouble.add(matrixArray);
+            }
+
+            int [] wynik = siec.testuj_z_ciagu(matrixSequenceDouble, lettersSequenceDouble);
+
+            info.setText("Rozpoznano "+Integer.toString(wynik[0])+" z "+Integer.toString(wynik[1]));
         });
     }
     private void letterArrToLetter(double[] source) {
@@ -205,13 +250,13 @@ public class Main extends JFrame {
 
         switch (outIndex) {
             case 0:
-                wyniktxt.setText("Narysowany znak: S");
+                litera.setText("S");
                 break;
             case 1:
-                wyniktxt.setText("Narysowany znak: 2");
+                litera.setText("2");
                 break;
             case 2:
-                wyniktxt.setText("Narysowany znak: Z");
+                litera.setText("Z");
                 break;
 
             default:
@@ -246,6 +291,7 @@ public class Main extends JFrame {
 
     }
     private void loadFile(ActionEvent e) {
+        info.setText("Wybierz plik...");
         try {
             final JFileChooser fc = new JFileChooser();
             int returnVal = fc.showOpenDialog(Main.this);
@@ -290,6 +336,7 @@ public class Main extends JFrame {
                     }
                 }
                 br.close();
+                info.setText("Wczytywanie zakonczone");
             }
 
         } catch (Exception ex) {
@@ -320,8 +367,9 @@ public class Main extends JFrame {
             lettersSequenceDouble.add(lettersArray);
             matrixSequenceDouble.add(matrixArray);
         }
-
         siec.ucz_z_ciagu(matrixSequenceDouble, lettersSequenceDouble);
+        learnCounter = matrixSequenceDouble.size();
+        showLearnCounter();
     }
     private void saveFile(ActionEvent e) {
         try {
@@ -445,7 +493,18 @@ public class Main extends JFrame {
         int [] wynik = siec.testuj_z_ciagu(matrixSequenceDouble, lettersSequenceDouble);
 
     }
+    private void upLearnCounter() {
+        learnCounter+=1;
+        learnlabel.setText(learnString+Integer.toString(learnCounter));
 
+    }
+
+
+
+    private void showLearnCounter() {
+        learnlabel.setText(learnString+Integer.toString(learnCounter));
+
+    }
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             new Main();

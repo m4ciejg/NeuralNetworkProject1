@@ -55,6 +55,9 @@ public class Main extends JFrame {
         tab[0]=195;
         tab[1]=10;
         tab[2]=3;
+        if(!button_Z.isSelected() || !button_2.isSelected() || !button_S.isSelected()) button3.setEnabled(false);
+        else button3.setEnabled(true);
+
         siec=new Siec(195,3,tab);
         radiobool = new ArrayList<>();
         pixelList = new ArrayList<>();
@@ -133,6 +136,16 @@ public class Main extends JFrame {
                 System.out.print(pixelList.get(0)[i]+" ");
             }
         });
+        button_S.addActionListener(e -> {
+            if(button_S.isSelected()) button3.setEnabled(true);
+        });
+        button_Z.addActionListener(e -> {
+            if(button_Z.isSelected()) button3.setEnabled(true);
+        });
+        button_2.addActionListener(e -> {
+            if(button_2.isSelected()) button3.setEnabled(true);
+        });
+
         buttonnaucz.addActionListener(e -> {
             //Przetwarzanie danych zapisanych w CU z logicznych na double
             ArrayList<double[]> lettersSequenceDouble = new ArrayList<double[]>();

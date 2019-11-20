@@ -52,11 +52,11 @@ public class DrawingBoard extends CustomBoard implements MouseMotionListener, Mo
 
     }
 
-    private void paintSection(MouseEvent event) {
+    private void paintSection(MouseEvent e) {
         //check if left mouse button is pressed
-        if(SwingUtilities.isLeftMouseButton(event)) {
+        if(SwingUtilities.isLeftMouseButton(e)) {
             for(Section s : sections) {
-                if(event.getX() > s.getX() && event.getX() < s.getX() + s.getWidth() && event.getY() > s.getY() && event.getY() < s.getY() + s.getHeight()) {
+                if (e.getX() > s.getX() && e.getX() < s.getX() + s.getWidth() && e.getY() > s.getY() && e.getY() < s.getY() + s.getHeight()) {
                     s.setActive(true);
                 }
             }
@@ -77,5 +77,12 @@ public class DrawingBoard extends CustomBoard implements MouseMotionListener, Mo
             else tempList.add(false);
         }
         return tempList;
+    }
+
+    @Override
+    public String toString() {
+        return "DrawingBoard{" +
+                "sections=" + sections +
+                '}';
     }
 }

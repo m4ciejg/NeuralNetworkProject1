@@ -9,7 +9,8 @@ public class Neuron {
     private double previousValue=0;
     private int liczba_wejsc;
     private static double ETA = 0.1;
-    private double delta = 0.0;
+
+    private double delta = 0;
 
     public Neuron(){
         liczba_wejsc=0;
@@ -23,8 +24,10 @@ public class Neuron {
     private void generuj() {
         Random r=new Random();
         for(int i=0;i<=liczba_wejsc;i++)
-        wagi[i]=(r.nextDouble()-0.5)*2.0*0.01;//do projektu
+            //wagi[i]=(r.nextDouble()-0.5)*2.0*10;//do ogladania
+            wagi[i]=(r.nextDouble()-0.5)*2.0*0.01;//do projektu
     }
+
     public int GetInputCount() {
         return liczba_wejsc;
     }
@@ -47,6 +50,7 @@ public class Neuron {
 
     public void SetDelta(double[] previousLayerProducts) {
         delta = 0.0;
+
         for (double product : previousLayerProducts) {
             delta += product;
         }

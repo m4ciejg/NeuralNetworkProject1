@@ -3,10 +3,9 @@ package com.maciejg.network;
 import com.maciejg.network.Neuron;
 
 public class Warstwa {
-    Neuron[] neurony;
+    Neuron [] neurony;
     int liczba_neuronow;
     double[] previousInput;
-
     public Warstwa(){
         neurony=null;
         liczba_neuronow=0;
@@ -17,12 +16,16 @@ public class Warstwa {
         for(int i=0;i<liczba_neuronow;i++)
             neurony[i]=new Neuron(liczba_wejsc);
     }
+
     double [] oblicz_wyjscie(double [] wejscia){
+        previousInput = wejscia;
         double [] wyjscie=new double[liczba_neuronow];
         for(int i=0;i<liczba_neuronow;i++)
             wyjscie[i]=neurony[i].oblicz_wyjscie(wejscia);
         return wyjscie;
     }
+
+    // TODO: zapami�ta� wyniki, na razie za ka�dym razem, powtarzaj�c, wywo�uj� metod�
     public double[] CalculateLowerLayerDelta() {
         int lowerLayerNeuronCount = neurony[0].GetInputCount();
         double[] delta = new double[lowerLayerNeuronCount];

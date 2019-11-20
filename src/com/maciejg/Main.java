@@ -39,6 +39,9 @@ public class Main extends JFrame {
     private JRadioButton button_2;
     private JLabel wyniktxt;
     private final int RESOLUTION = 14;
+    public int learnCounter=0;
+    private JTextField infoTextField;
+    private JTextField learnTextField;
     private void clearWindow() {
         paint.clearBoard();
         repaint();
@@ -85,7 +88,7 @@ public class Main extends JFrame {
         wyniktxt = new JLabel("X",SwingConstants.CENTER);
         panel1.add(wyniktxt);
         wczytaj = new JButton("Wczytaj CU");
-        clearButton = new JButton("X");
+        clearButton = new JButton("");
         button3 = new JButton("Dodaj do CU");
         zapisz = new JButton("Zapisz");
         buttonnaucz = new JButton("Naucz");
@@ -202,13 +205,13 @@ public class Main extends JFrame {
 
         switch (outIndex) {
             case 0:
-                wyniktxt.setText("Narysowany znak: 3");
+                wyniktxt.setText("Narysowany znak: S");
                 break;
             case 1:
-                wyniktxt.setText("Narysowany znak: E");
+                wyniktxt.setText("Narysowany znak: 2");
                 break;
             case 2:
-                wyniktxt.setText("Narysowany znak: F");
+                wyniktxt.setText("Narysowany znak: Z");
                 break;
 
             default:

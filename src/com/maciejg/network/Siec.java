@@ -48,7 +48,7 @@ public class Siec {
                 if(closeEnough)
                     correctAnswerCount++;
 
-                // Oblicz bledy dla kazdej poprzedniej warstwy
+                // Oblicz bledy dla ka�dej poprzedniej warstwy
                 for(int i = warstwy.length - 1; i>0; i--) {
                     warstwy[i].SetDeltaInNeurons(delta);
                     delta = warstwy[i].CalculateLowerLayerDelta();

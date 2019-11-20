@@ -1,7 +1,5 @@
 package com.maciejg.network;
 
-import com.maciejg.network.Neuron;
-
 public class Warstwa {
     Neuron [] neurony;
     int liczba_neuronow;
@@ -26,26 +24,26 @@ public class Warstwa {
     }
 
     // TODO: zapami�ta� wyniki, na razie za ka�dym razem, powtarzaj�c, wywo�uj� metod�
-    public double[] CalculateLowerLayerDelta() {
-        int lowerLayerNeuronCount = neurony[0].GetInputCount();
+    public double[] calculateLowerLayerDelta() {
+        int lowerLayerNeuronCount = neurony[0].getInputCount();
         double[] delta = new double[lowerLayerNeuronCount];
 
         for (int i = 0; i < lowerLayerNeuronCount; i++) {
             for (int j = 0; j < neurony.length; j++) {
-                delta[i] += neurony[j].GetDeltaMultipliedByNthWeight(i);
+                delta[i] += neurony[j].getDeltaMultipliedByNthWeight(i);
             }
         }
         return delta;
     }
 
-    public void SetDeltaInNeurons(double[] delta) {
+    public void setDeltaInNeurons(double[] delta) {
 
         for(int i = 0; i<delta.length;i++ ) {
-            neurony[i].SetDelta(delta[i]);		}
+            neurony[i].setDelta(delta[i]);		}
     }
 
-    public void ChangeWeights() {
+    public void changeWeights() {
         for(int i=0; i<neurony.length; i++)
-            neurony[i].ChangeWeights(previousInput);
+            neurony[i].changeWeights(previousInput);
     }
 }

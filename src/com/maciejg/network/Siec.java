@@ -8,6 +8,7 @@ public class Siec {
     int liczba_warstw;
     private static final int LICZBA_CYKLI = 12000;
     private static final double EPS = 0.01;
+    public int cykle = 0;
 
     public Siec(){
         warstwy=null;
@@ -27,7 +28,7 @@ public class Siec {
 
     public void ucz_z_ciagu(ArrayList<double[]> ciagWejsc, ArrayList<double[]> ciagWynikow){
 
-        for(int cykle = 0; cykle < LICZBA_CYKLI; cykle++){
+        for(cykle = 0; cykle < LICZBA_CYKLI; cykle++){
             int correctAnswerCount = 0;
             for(int nrLitery = 0; nrLitery < ciagWejsc.size(); nrLitery++) {
 
@@ -35,11 +36,9 @@ public class Siec {
                 double[] correctOutput = ciagWynikow.get(nrLitery);
                 double delta[] = new double[correctOutput.length];
 
-                // Oblicz warto�ci
                 for(int i=0;i<liczba_warstw;i++)
                     output=warstwy[i].oblicz_wyjscie(output);
 
-                // Oblicz bledy
                 boolean closeEnough = true;
                 for(int i=0; i<output.length; i++)
                     if(Math.abs(delta[i] = (correctOutput[i]-output[i]))> EPS)
@@ -48,16 +47,16 @@ public class Siec {
                 if(closeEnough)
                     correctAnswerCount++;
 
-                // Oblicz bledy dla ka�dej poprzedniej warstwy
+                // Bledy poprzedniej warstwy
                 for(int i = warstwy.length - 1; i>0; i--) {
-                    warstwy[i].SetDeltaInNeurons(delta);
-                    delta = warstwy[i].CalculateLowerLayerDelta();
+                    warstwy[i].setDeltaInNeurons(delta);
+                    delta = warstwy[i].calculateLowerLayerDelta();
                 }
-                warstwy[0].SetDeltaInNeurons(delta);
+                warstwy[0].setDeltaInNeurons(delta);
 
-                // Zmie� wagi
+                // zmiana wag
                 for(int i = 0; i < warstwy.length; i++)
-                    warstwy[i].ChangeWeights();
+                    warstwy[i].changeWeights();
             }
 
             if(correctAnswerCount == ciagWejsc.size())
@@ -68,6 +67,7 @@ public class Siec {
                 cykle++;
                 cykle--;
             }
+            System.out.println("Aktualny cykl" + cykle);
         }
     }
 
@@ -81,11 +81,10 @@ public class Siec {
             double[] correctOutput = ciagWynikow.get(nrLitery);
             double delta[] = new double[correctOutput.length];
 
-            // Oblicz warto�ci
+            // Oblicz wartosci
             for(int i=0;i<liczba_warstw;i++)
                 output=warstwy[i].oblicz_wyjscie(output);
 
-            // Oblicz bledy
             boolean closeEnough = true;
             for(int i=0; i<output.length; i++)
                 if(Math.abs(delta[i] = (correctOutput[i]-output[i]))> EPS)

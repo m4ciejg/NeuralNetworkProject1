@@ -28,7 +28,7 @@ public class Neuron {
             wagi[i]=(r.nextDouble()-0.5)*2.0*0.01;//do projektu
     }
 
-    public int GetInputCount() {
+    public int getInputCount() {
         return liczba_wejsc;
     }
 
@@ -44,7 +44,7 @@ public class Neuron {
         return previousValue;
     }
 
-    public void SetDelta(double delta) {
+    public void setDelta(double delta) {
         this.delta = delta;
     }
 
@@ -56,11 +56,11 @@ public class Neuron {
         }
     }
 
-    public double GetDeltaMultipliedByNthWeight(int n) {
+    public double getDeltaMultipliedByNthWeight(int n) {
         return delta*wagi[n];
     }
 
-    public void ChangeWeights(double[] input) {
+    public void changeWeights(double[] input) {
 
         wagi[0] = ETA*delta*f_poch(previousSum);
         for(int i=1;i<wagi.length;i++)

@@ -18,9 +18,13 @@ public class Main extends JFrame {
     private DrawingBoard paint;
     private List<boolean[]> pixelList;
     private List<boolean[]> radiobool;
+    private ArrayList<boolean[]> testLettersSequence;
+    private ArrayList<boolean[]> testMatrixSequence;
     private boolean[] pixbool;
     private int lettersCount;
     private int pixelCount;
+    private int testLettersCount;
+    private int testPixelCount;
     private Siec siec;
     private Warstwa warstwa;
     private JButton wczytaj;
@@ -29,6 +33,7 @@ public class Main extends JFrame {
     private JButton clearButton;
     private JButton rozpoznaj;
     private JButton buttonnaucz;
+    private JButton loadtest;
     private JRadioButton button_Z;
     private JRadioButton button_S;
     private JRadioButton button_2;
@@ -62,9 +67,7 @@ public class Main extends JFrame {
         JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayout(3,1));
         JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridLayout(1,2));
-        JPanel panel5 = new JPanel();
-        panel5.setLayout(new GridLayout(1,2));
+        panel3.setLayout(new GridLayout(1,4));
         JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayout(1,2));
         JPanel panel6= new JPanel();
@@ -78,15 +81,16 @@ public class Main extends JFrame {
         panel2.add(panel4);
         wyniktxt = new JLabel("X",SwingConstants.CENTER);
         panel1.add(wyniktxt);
-        wczytaj = new JButton("Wczytaj");
-        clearButton = new JButton("Wyczysc");
-        button3 = new JButton("Dodaj do ciagu");
+        wczytaj = new JButton("Wczytaj CU");
+        clearButton = new JButton("X");
+        button3 = new JButton("Dodaj do CU");
         zapisz = new JButton("Zapisz");
         buttonnaucz = new JButton("Naucz");
+        loadtest = new JButton("Wczytaj CT");
         panel3.add(clearButton);
-        panel3.add(panel5);
-        panel5.add(wczytaj);
-        panel5.add(zapisz);
+        panel3.add(wczytaj);
+        panel3.add(loadtest);
+        panel3.add(zapisz);
         //radio
         button_S = new JRadioButton("S");
         button_Z = new JRadioButton("Z");
@@ -121,9 +125,13 @@ public class Main extends JFrame {
             pixbool=convert(paint.returnListOfPixels().toArray());
             pixelList.add(pixbool);
             radiobool.add(radiobtab());
-
-            System.out.println(radiobool);
-            System.out.println(pixelList);
+            for(int i =0; i< radiobool.get(0).length; i++) {
+                System.out.print(radiobool.get(0)[i]+" ");
+            }
+            System.out.println();
+            for(int i =0; i< pixelList.get(0).length; i++) {
+                System.out.print(pixelList.get(0)[i]+" ");
+            }
         });
         buttonnaucz.addActionListener(e -> {
             //Przetwarzanie danych zapisanych w CU z logicznych na double
@@ -150,12 +158,58 @@ public class Main extends JFrame {
             siec.ucz_z_ciagu(matrixSequenceDouble, lettersSequenceDouble);
 
         });
-
+        loadtest.addActionListener(e -> {
+            testFile(e);
+        });
         rozpoznaj.addActionListener(e -> {
-            wyniktxt.setText("x");
+                boolean[] letterBoolMatrix =convert(paint.returnListOfPixels().toArray());
+
+                double[] inputLetterPix = boolArrayToDouble(letterBoolMatrix);
+
+
+                double[] recognizedLetter = siec.oblicz_wyjscie(inputLetterPix);
+
+                letterArrToLetter(recognizedLetter);
         });
-        zapisz.addActionListener(e -> {
-        });
+    }
+    private void letterArrToLetter(double[] source) {
+        int outCount = 0;
+        int outIndex = -1;
+
+        for (int i = 0; i < source.length; i++) {
+            if(source[i] > 0.8) {
+                outCount++;
+                outIndex = i;
+            }
+        }
+
+        //Tylko 1 litera mo�e by� pod�wietlona
+        if(outCount != 1)
+            outIndex = -1;
+
+        switch (outIndex) {
+            case 0:
+                wyniktxt.setText("Narysowany znak: 3");
+                break;
+            case 1:
+                wyniktxt.setText("Narysowany znak: E");
+                break;
+            case 2:
+                wyniktxt.setText("Narysowany znak: F");
+                break;
+
+            default:
+                wyniktxt.setText("Narysowano bledny znak");
+                break;
+        }
+    }
+    private double[] boolArrayToDouble(boolean[] source) {
+        double[] result = new double[source.length];
+        for (int i = 0; i < source.length; i++) {
+            result[i] = source[i] ? 1 : 0;
+        }
+
+        return result;
     }
     private boolean[] convert(Object[] array){
         boolean[] result = new boolean[array.length];
@@ -225,6 +279,33 @@ public class Main extends JFrame {
         } catch (Exception ex) {
 
         }
+        int [] tab=new int [3];
+        tab[0]=195;
+        tab[1]=10;
+        tab[2]=3;
+
+        ArrayList<double[]> lettersSequenceDouble = new ArrayList<double[]>();
+        ArrayList<double[]> matrixSequenceDouble = new ArrayList<double[]>();
+
+        for(int i = 0; i< radiobool.size(); i++) {
+            boolean[] lettersBool = radiobool.get(i);
+            boolean[] matrixBool = pixelList.get(i);
+            double[] lettersArray = new double[lettersBool.length];
+            double[] matrixArray = new double[matrixBool.length];
+
+            for (int j = 0; j < lettersArray.length; j++) {
+                lettersArray[j] = lettersBool[j] ? 1.0 : 0.0;
+            }
+            for (int j = 0; j < matrixArray.length; j++) {
+                matrixArray[j] = matrixBool[j] ? 1.0 : 0.0;
+            }
+
+
+            lettersSequenceDouble.add(lettersArray);
+            matrixSequenceDouble.add(matrixArray);
+        }
+
+        siec.ucz_z_ciagu(matrixSequenceDouble, lettersSequenceDouble);
     }
     private void saveFile(ActionEvent e) {
         try {
@@ -273,6 +354,82 @@ public class Main extends JFrame {
 
         }
     }
+    private void testFile(ActionEvent e) {
+        try {
+            final JFileChooser fc = new JFileChooser();
+            int returnVal = fc.showOpenDialog(Main.this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                testLettersSequence = new ArrayList<boolean[]>();
+                testMatrixSequence = new ArrayList<boolean[]>();
+
+                File file = fc.getSelectedFile();
+
+                String path = file.getAbsolutePath();
+
+                FileInputStream fstream = new FileInputStream(path);
+                DataInputStream in = new DataInputStream(fstream);
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                String strLine;
+
+                testLettersCount = Integer.parseInt(br.readLine());
+                testPixelCount = Integer.parseInt(br.readLine());
+
+                while ((strLine = br.readLine()) != null)   {
+                    String[] tokens = strLine.split(" ");
+
+                    if(testLettersSequence.size() == testMatrixSequence.size()){
+
+                        boolean[] letter = new boolean[testLettersCount];
+
+                        for (int i = 0; i < testLettersCount; i++) {
+                            letter[i] = tokens[i].equals("0") ? false : true;
+                        }
+
+                        testLettersSequence.add(letter);
+                    }
+                    else {
+
+                        boolean[] matrix = new boolean[testPixelCount];
+
+                        for (int i = 0; i < testPixelCount; i++) {
+                            matrix[i] = tokens[i].equals("0") ? false : true;
+                        }
+
+                        testMatrixSequence.add(matrix);
+                    }
+                }
+                br.close();
+            }
+        }
+        catch(Exception ex) {
+        }
+
+        //Przetwarzanie danych zapisanych w CU z logicznych na double
+        ArrayList<double[]> lettersSequenceDouble = new ArrayList<double[]>();
+        ArrayList<double[]> matrixSequenceDouble = new ArrayList<double[]>();
+
+        for(int i = 0; i< testLettersSequence.size(); i++) {
+            boolean[] lettersBool = testLettersSequence.get(i);
+            boolean[] matrixBool = testMatrixSequence.get(i);
+            double[] lettersArray = new double[lettersBool.length];
+            double[] matrixArray = new double[matrixBool.length];
+
+            for (int j = 0; j < lettersArray.length; j++) {
+                lettersArray[j] = lettersBool[j] ? 1.0 : 0.0;
+            }
+            for (int j = 0; j < matrixArray.length; j++) {
+                matrixArray[j] = matrixBool[j] ? 1.0 : 0.0;
+            }
+
+            lettersSequenceDouble.add(lettersArray);
+            matrixSequenceDouble.add(matrixArray);
+        }
+
+        int [] wynik = siec.testuj_z_ciagu(matrixSequenceDouble, lettersSequenceDouble);
+
+    }
+
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             new Main();

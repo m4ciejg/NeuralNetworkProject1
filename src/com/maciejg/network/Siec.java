@@ -18,7 +18,7 @@ public class Siec {
         for(int i=0;i<liczba_warstw;i++)
             warstwy[i]=new Warstwa((i==0)?liczba_wejsc:lnww[i-1],lnww[i]);
     }
-    double [] oblicz_wyjscie(double [] wejscia){
+    public double [] oblicz_wyjscie(double [] wejscia){
         double [] wyjscie=null;
         for(int i=0;i<liczba_warstw;i++)
             wejscia=wyjscie=warstwy[i].oblicz_wyjscie(wejscia);
@@ -72,7 +72,7 @@ public class Siec {
     }
 
 
-    int[] testuj_z_ciagu(ArrayList<double[]> ciagWejsc, ArrayList<double[]> ciagWynikow){
+    public int[] testuj_z_ciagu(ArrayList<double[]> ciagWejsc, ArrayList<double[]> ciagWynikow){
         int [] wyjscie= {1,2};
         int correctAnswerCount = 0;
         for(int nrLitery = 0; nrLitery < ciagWejsc.size(); nrLitery++) {

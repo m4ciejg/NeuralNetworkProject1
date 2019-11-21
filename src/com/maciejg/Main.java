@@ -16,6 +16,7 @@ import java.util.List;
 
 public class Main extends JFrame {
     private DrawingBoard paint;
+    private static final int hidden=10;
     private List<boolean[]> pixelList;
     private List<boolean[]> radiobool;
     private ArrayList<boolean[]> testLettersSequence;
@@ -60,7 +61,7 @@ public class Main extends JFrame {
         setOnClicks();
         int [] tab=new int [3];
         tab[0]=195;
-        tab[1]=10;
+        tab[1]=hidden;
         tab[2]=3;
         if(!button_Z.isSelected() || !button_2.isSelected() || !button_S.isSelected()) button3.setEnabled(false);
         else button3.setEnabled(true);
@@ -344,7 +345,7 @@ public class Main extends JFrame {
         }
         int [] tab=new int [3];
         tab[0]=195;
-        tab[1]=10;
+        tab[1]=hidden;
         tab[2]=3;
 
         ArrayList<double[]> lettersSequenceDouble = new ArrayList<double[]>();
@@ -491,6 +492,7 @@ public class Main extends JFrame {
         }
 
         int [] wynik = siec.testuj_z_ciagu(matrixSequenceDouble, lettersSequenceDouble);
+        info.setText("Rozpoznano "+Integer.toString(wynik[0])+" z "+Integer.toString(wynik[1]));
 
     }
     private void upLearnCounter() {

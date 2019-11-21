@@ -16,7 +16,8 @@ import java.util.List;
 
 public class Main extends JFrame {
     private DrawingBoard paint;
-    private static final int hidden=10;
+    private static final int firstLayer=30;
+    private static final int hidden=15;
     private List<boolean[]> pixelList;
     private List<boolean[]> radiobool;
     private ArrayList<boolean[]> testLettersSequence;
@@ -60,13 +61,13 @@ public class Main extends JFrame {
         ustawLayout();
         setOnClicks();
         int [] tab=new int [3];
-        tab[0]=195;
+        tab[0]=firstLayer;
         tab[1]=hidden;
         tab[2]=3;
         if(!button_Z.isSelected() || !button_2.isSelected() || !button_S.isSelected()) button3.setEnabled(false);
         else button3.setEnabled(true);
 
-        siec=new Siec(195,3,tab);
+        siec=new Siec(196,3,tab);
         radiobool = new ArrayList<>();
         pixelList = new ArrayList<>();
         setVisible(true);
@@ -102,12 +103,12 @@ public class Main extends JFrame {
         panel1.add(panel9);
         wyniktxt = new JLabel("",SwingConstants.CENTER);
 
-        wczytaj = new JButton("Wczytaj CU");
-        clearButton = new JButton("X");
-        button3 = new JButton("Dodaj do CU");
+        wczytaj = new JButton("Wczyt CU");
+        clearButton = new JButton("Czysc");
+        button3 = new JButton("Dodaj");
         zapisz = new JButton("Zapisz");
         buttonnaucz = new JButton("Naucz");
-        loadtest = new JButton("Wczytaj CT");
+        loadtest = new JButton("Wczyt CT");
         testuj = new JButton("Testuj...");
         info = new JLabel("Wczytaj lub dodaj ciąg",SwingConstants.CENTER);
         learnlabel = new JLabel("Ciag uczacy: ", SwingConstants.CENTER);
@@ -344,7 +345,7 @@ public class Main extends JFrame {
 
         }
         int [] tab=new int [3];
-        tab[0]=195;
+        tab[0]=firstLayer;
         tab[1]=hidden;
         tab[2]=3;
 
@@ -492,7 +493,7 @@ public class Main extends JFrame {
         }
 
         int [] wynik = siec.testuj_z_ciagu(matrixSequenceDouble, lettersSequenceDouble);
-        info.setText("Rozpoznano "+Integer.toString(wynik[0])+" z "+Integer.toString(wynik[1]));
+        info.setText("Rozpoznano "+wynik[0]+" z "+wynik[1]);
 
     }
     private void upLearnCounter() {

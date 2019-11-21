@@ -1,5 +1,6 @@
 package com.maciejg.network;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Siec {
@@ -59,7 +60,10 @@ public class Siec {
                     warstwy[i].changeWeights();
             }
 
+
+
             if(correctAnswerCount == ciagWejsc.size())
+                //JOptionPane.showMessageDialog(null, "Uczenie zakonczone");
                 break;
 
             if(cykle%100 == 0)
@@ -67,8 +71,10 @@ public class Siec {
                 cykle++;
                 cykle--;
             }
-            System.out.println("Aktualny cykl" + cykle);
+
+           // System.out.println("Aktualny cykl" + cykle);
         }
+        JOptionPane.showMessageDialog(null, "Uczenie zakonczone");
     }
 
 

@@ -8,7 +8,7 @@ public class Siec {
     Warstwa [] warstwy;
     int liczba_warstw;
     private static final int LICZBA_CYKLI = 12000;
-    private static final double EPS = 0.01;
+    private static final double EPS = 0.1;
     public int cykle = 0;
 
     public Siec(){

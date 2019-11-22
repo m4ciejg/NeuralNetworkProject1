@@ -113,9 +113,8 @@ public class Main extends JFrame {
         info = new JLabel("Wczytaj lub dodaj ciąg",SwingConstants.CENTER);
         learnlabel = new JLabel("Ciag uczacy: ", SwingConstants.CENTER);
         rozpoznana = new JLabel("",SwingConstants.CENTER);
-        Font fontLetter2 = new Font("Arial", Font.BOLD, 60);
         litera = new JLabel("",SwingConstants.CENTER);
-        litera.setFont(fontLetter2);
+        litera.setFont(new Font("Arial", Font.BOLD, 60));
         panel3.add(clearButton);
         panel3.add(wczytaj);
         panel3.add(loadtest);
@@ -240,7 +239,7 @@ public class Main extends JFrame {
         int outIndex = -1;
 
         for (int i = 0; i < source.length; i++) {
-            if(source[i] > 0.8) {
+            if(source[i] > 0.9) {
                 outCount++;
                 outIndex = i;
             }
@@ -252,17 +251,21 @@ public class Main extends JFrame {
 
         switch (outIndex) {
             case 0:
+                litera.setFont(new Font("Arial", Font.BOLD, 60));
                 litera.setText("S");
                 break;
             case 1:
+                litera.setFont(new Font("Arial", Font.BOLD, 60));
                 litera.setText("2");
                 break;
             case 2:
+                litera.setFont(new Font("Arial", Font.BOLD, 60));
                 litera.setText("Z");
                 break;
 
             default:
-                wyniktxt.setText("Narysowano bledny znak");
+                litera.setFont(new Font("Arial",Font.BOLD, 15));
+                litera.setText("Bledny znak");
                 break;
         }
     }
